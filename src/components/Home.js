@@ -35,7 +35,7 @@ let HomePage = (props) => {
                                 'Product Engineer',
                                 'UX Engineer',
                                 'Creative Coder',
-                                'Frontend Engineer'
+                                'Design Engineer'
                             ]}
                             typeSpeed={50}
                             backSpeed={30}

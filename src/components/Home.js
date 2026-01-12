@@ -1,10 +1,68 @@
 import React, {Component} from 'react';
-import Typed from 'react-typed';
 import './home.css'
 import LGLogo from '../images/ARS-LOGO.svg';
 
+// Custom TypeWriter component compatible with React 16
+class TypeWriter extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            text: '',
+            isDeleting: false,
+            loopIndex: 0,
+            charIndex: 0
+        };
+    }
 
+    componentDidMount() {
+        this.tick();
+    }
 
+    componentWillUnmount() {
+        clearTimeout(this.timeout);
+    }
+
+    tick = () => {
+        const { strings, typeSpeed, backSpeed, backDelay } = this.props;
+        const { isDeleting, loopIndex, charIndex } = this.state;
+        const currentString = strings[loopIndex % strings.length];
+
+        if (isDeleting) {
+            this.setState({
+                text: currentString.substring(0, charIndex - 1),
+                charIndex: charIndex - 1
+            });
+        } else {
+            this.setState({
+                text: currentString.substring(0, charIndex + 1),
+                charIndex: charIndex + 1
+            });
+        }
+
+        let delta = isDeleting ? backSpeed : typeSpeed;
+
+        if (!isDeleting && charIndex === currentString.length) {
+            delta = backDelay;
+            this.setState({ isDeleting: true });
+        } else if (isDeleting && charIndex === 0) {
+            this.setState({
+                isDeleting: false,
+                loopIndex: loopIndex + 1
+            });
+            delta = 500;
+        }
+
+        this.timeout = setTimeout(this.tick, delta);
+    }
+
+    render() {
+        return (
+            <span className={this.props.className}>
+                {this.state.text}
+            </span>
+        );
+    }
+}
 
 let HomePage = (props) => {
     return(
@@ -30,7 +88,7 @@ let HomePage = (props) => {
                         data-aos="fade-up"
                         data-aos-delay="400"
                     >
-                        <Typed
+                        <TypeWriter
                             strings={[
                                 'Product Engineer',
                                 'UX Engineer',
@@ -41,7 +99,6 @@ let HomePage = (props) => {
                             backSpeed={30}
                             backDelay={2000}
                             className="job-title typed-text"
-                            loop
                         />
                         <span className="typed-cursor">|</span>
                     </div>

@@ -32,10 +32,10 @@ let HomePage = (props) => {
                     >
                         <Typed
                             strings={[
-                                'Front-End Engineer',
-                                'UI/UX Developer',
+                                'Product Engineer',
+                                'UX Engineer',
                                 'Creative Coder',
-                                'Front-End Engineer'
+                                'Frontend Engineer'
                             ]}
                             typeSpeed={50}
                             backSpeed={30}
